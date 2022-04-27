@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Companies</title>
+    <style>
+      button {
+        margin-top: 1rem;
+        background-color: #43ae38;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        color: #fff;
+      }
+      label {
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Upload Companies to Collection</h1>
+      <br />
+      <label for="file">Select CSV to upload</label><br />
+      <input type="file" name="file" id="file" value="" />
+      <br />
+      <button id="submit">Upload Companies</button>
+    </main>
+  </body>
+
+  <script>
+    let abortController = new AbortController();
+    window.onbeforeunload = function (e) {
+      abortController.abort();
+    };
+
+    const submit = document.querySelector("#submit");
+    submit.addEventListener("click", handleUpload);
+
+    async function handleUpload(event) {
+      const form = document.querySelector(".form");
+      const file = document.querySelector('input[type="file"]');
+
+      let formData = new FormData();
+
+      if (file.files[0].name.split(".")[1] !== "csv") {
+        alert("Please upload CSV file");
+        return;
+      }
+      formData.append("companies", file.files[0]);
+      formData.append("name", "My Name");
+
+      fetch("http://localhost:3000/upload", {
+        method: "POST",
+        body: formData,
+        // redirect: "follow",
+        signal: abortController.signal,
+      }).then((res) => {
+        alert("Data added successfully!");
+        return;
+      });
+      return;
+    }
+  </script>
+</html>
