@@ -52,7 +52,7 @@
       formData.append("companies", file.files[0]);
       formData.append("name", "My Name");
 
-      fetch("http://localhost:3000/upload", {
+      fetch("https://upload-companies.herokuapp.com/upload", {
         method: "POST",
         body: formData,
         // redirect: "follow",
